@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -43,6 +45,7 @@ class MainActivity : ComponentActivity() {
 
 data class Message(val author: String, val body: String)
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessageCard(msg: Message) {
     // Add padding around our message
@@ -55,16 +58,26 @@ fun MessageCard(msg: Message) {
                 .size(40.dp)
                 // Clip image to be shaped as a circle
                 .clip(CircleShape)
+                .border(1.5.dp, MaterialTheme.colorScheme.secondary, CircleShape)
         )
 
         // Add a horizontal space between the image and the column
         Spacer(modifier = Modifier.width(8.dp))
 
         Column {
-            Text(text = msg.author)
+            Text(text = msg.author,
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.titleMedium)
             // Add a vertical space between the author and message texts
             Spacer(modifier = Modifier.height(4.dp))
-            Text(text = msg.body)
+
+            Surface(shape = MaterialTheme.shapes.medium, tonalElevation = 50.dp) {
+                Text(
+                    text = msg.body,
+                    modifier = Modifier.padding(all = 4.dp),
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
         }
     }
 }
@@ -72,7 +85,13 @@ fun MessageCard(msg: Message) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewMessageCard() {
-    MessageCard(
-        msg = Message("Colleague", "Hey, take a look at Jetpack Compose, it's great!")
-    )
+    ComposeTutorialTheme {
+        Surface(
+            color = MaterialTheme.colorScheme.background
+        ) {
+            MessageCard(
+                msg = Message("Colleague", "Hey, take a look at Jetpack Compose, it's great!")
+            )
+        }
+    }
 }
