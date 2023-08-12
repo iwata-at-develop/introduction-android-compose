@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -37,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MessageCard(Message("Android", "Jetpack Compose"))
+                    Conversation(SampleData.conversationSample)
                 }
             }
         }
@@ -98,6 +100,27 @@ fun PreviewMessageCard() {
             MessageCard(
                 msg = Message("Colleague", "Hey, take a look at Jetpack Compose, it's great!")
             )
+        }
+    }
+}
+
+@Composable
+fun Conversation(messages: List<Message>) {
+    LazyColumn {
+        items(messages) { message ->
+            MessageCard(message)
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewConversation() {
+    ComposeTutorialTheme {
+        Surface(
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Conversation(SampleData.conversationSample)
         }
     }
 }
